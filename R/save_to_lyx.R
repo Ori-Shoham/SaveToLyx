@@ -40,24 +40,24 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
       DATA <- readRDS(dataFile)
       DATA = DATA[name!=currentName]
     } else {
-      DATA = data.table()
+      DATA = data.table::data.table()
       DATA = rbind(DATA, list(name=currentName, value=currentValue, lastUpdated = Sys.time()))
     }
   } else {
     if (file.exists(latexFile) & file.size(latexFile)>10) {
-      DATA <- fread(latexFile, sep=" ", header = FALSE, col.names = c("name", "value"))
+      DATA <- data.table::fread(latexFile, sep=" ", header = FALSE, col.names = c("name", "value"))
       #DATA[, name:=gsub("\\\\newcommand\\\\", "", name)]
       #DATA[, value:=gsub("^\\{", "", gsub("}$", "", value))]
       DATA = DATA[gsub("\\\\newcommand\\\\", "", name)!=currentName]
     } else {
-      DATA = data.table()
+      DATA = data.table::data.table()
     }
     DATA = rbind(DATA, list(name=paste0("\\newcommand\\", currentName), value=paste0("{", currentValue ,"}")))
   }
 
   DATA = unique(DATA)
   DATA = DATA[order(name)]
-  setkey(DATA, "name")
+  data.table::setkey(DATA, "name")
 
   if (!is.null(dataFile)) {
     saveRDS(DATA, file = dataFile)
