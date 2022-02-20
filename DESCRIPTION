@@ -13,4 +13,6 @@ RoxygenNote: 7.1.2
 URL: https://github.com/Ori-Shoham/savetolyx
 BugReports: https://github.com/Ori-Shoham/savetolyx/issues
 Imports: 
-    data.table
+    data.table,
+    Hmisc,
+    scales

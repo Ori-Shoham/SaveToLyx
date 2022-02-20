@@ -1,18 +1,19 @@
 #' Title
 #'
-#' @param currentValue
-#' @param currentName
-#' @param latexFile
-#' @param translate
-#' @param digits
-#' @param percent
-#' @param accuracy
-#' @param dataFile
+#' @param currentValue a
+#' @param currentName a
+#' @param latexFile a
+#' @param translate a
+#' @param digits a
+#' @param percent a
+#' @param accuracy a
+#' @param dataFile a
 #'
-#' @return
+#'
 #' @export
+#' @import data.table
 #'
-#' @examples
+#'
 save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, translate=TRUE,
                       digits = 2, percent=FALSE, accuracy=1, dataFile = NULL) {
   if(grepl("[0-9]", currentName)) {
