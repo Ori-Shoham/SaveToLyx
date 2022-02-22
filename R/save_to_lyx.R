@@ -16,7 +16,7 @@
 #'
 save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, translate=TRUE,
                       digits = 2, percent=FALSE, accuracy=1, dataFile = NULL) {
-  if(grepl("[0-9]", currentName)) {
+  if(any(grepl("[0-9]", currentName))) {
     stop("Can't include digits in name")
   }
 
