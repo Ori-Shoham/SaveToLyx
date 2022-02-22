@@ -26,9 +26,7 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
     } else {
       currentValue = formatC(currentValue, format = "f", digits = digits,  big.mark = ",")
     }
-    if(grepl("[0-9]", currentName)) {
-      stop("Can't include digits in name")
-    }
+
   }
 
   if (translate==TRUE) {
