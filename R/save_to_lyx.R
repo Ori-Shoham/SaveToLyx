@@ -16,9 +16,20 @@
 #'
 save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, translate=TRUE,
                       digits = 2, percent=FALSE, accuracy=1, dataFile = NULL) {
-  if(any(grepl("[0-9]", currentName))) {
-    stop("Can't include digits in name")
+  # Test for valid inputs
+  if(any(!grepl("[^A-Za-z]", currentName))) {
+    stop("Names must consist of letters only")
   }
+  if(any(duplicated(currentName))){
+    stop("Names must be unique")
+  }
+  if(length(currentValue)!=length(currentName)){
+    stop("Names and Values must be of compatible lengths")
+  }
+  if(length(percent) > 1 & length(percent)!=length(currentName)){
+    stop("Percent must be of length 1 or of the same length as values and names")
+  }
+
 
   if (is.numeric(currentValue)) {
     if (percent) {
