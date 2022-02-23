@@ -27,18 +27,20 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
     stop("Names and Values must be of compatible lengths")
   }
   if(length(percent) > 1 & length(percent)!=length(currentName)){
-    stop("Percent must be of length 1 or of the same length as values and names")
+    stop("percent must be of length 1 or of the same length as values and names")
   }
-
-
-  if (is.numeric(currentValue)) {
-    if (percent) {
-      currentValue = scales::percent(currentValue, accuracy=accuracy, big.mark = ",")
-    } else {
-      currentValue = formatC(currentValue, format = "f", digits = digits,  big.mark = ",")
+  n <- length(currentValue)
+  # Format values
+  for (i in 1:n){
+    if (is.numeric(currentValue[i])) {
+      if ((percent+rep(0,n))[i]) {
+        currentValue[i] = scales::percent(currentValue[i], accuracy=accuracy, big.mark = ",")
+      } else {
+        currentValue[i] = formatC(currentValue[i], format = "f", digits = digits,  big.mark = ",")
+      }
     }
-
   }
+
 
   if (translate==TRUE) {
     currentValue = Hmisc::latexTranslate(currentValue)
