@@ -12,7 +12,7 @@ save_to_lyx(
   digits = 2,
   percent = FALSE,
   accuracy = 1,
-  dataFile = NULL
+  replaceValues = TRUE
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ save_to_lyx(
 
 \item{accuracy}{a}
 
-\item{dataFile}{a}
+\item{replace}{a}
 }
 \description{
 Title

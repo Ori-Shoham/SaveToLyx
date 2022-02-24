@@ -28,23 +28,10 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   if (length(percent) > 1 & length(percent) != length(currentName)) {
     stop("percent must be of length 1 or of the same length as values and names")
   }
-  n <- length(currentValue)
-  # Format values
-  currentValueTemp <- vector("character", length = n)
-  for (i in 1:n) {
-    if (is.numeric(currentValue[i])) {
-      if ((percent + rep(0, n))[i]) {
-        currentValueTemp[i] <- scales::percent(currentValue[i], accuracy = accuracy, big.mark = ",")
-      } else {
-        currentValueTemp[i] <- formatC(currentValue[i], format = "f", digits = digits, big.mark = ",")
-      }
-    }
-  }
-  currentValue[is.numeric(currentValue)] <- currentValueTemp[is.numeric(currentValue)]
 
-  if (translate) {
-    currentValue <- Hmisc::latexTranslate(currentValue)
-  }
+  # Format values
+  currentValue <- format_values(currentValue, percent, accuracy, digits , translate)
+
 
   # Get current values
   if (file.exists(latexFile) & file.size(latexFile) > 10) {
@@ -76,4 +63,30 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   # Warn about replacements
   if (n_exist > 1) message(paste0(n_exist, " values replaced"))
   if (n_exist == 1) message("One value replaced")
+}
+
+
+#' Formats values for lyx
+#'
+#' @inheritParams save_to_lyx
+#'
+#' @return A formatted character vector.
+#' @keywords internal
+
+format_values <- function(currentValue, percent,  accuracy, digits, translate) {
+  if (is.numeric(currentValue[i])) {
+    n <- length(currentValue)
+   currentValueTemp <- vector("character", length = n)
+    for (i in 1:n) {
+         if ((percent + rep(0, n))[i]) {
+        currentValueTemp[i] <- scales::percent(currentValue[i], accuracy = accuracy, big.mark = ",")
+      } else {
+        currentValueTemp[i] <- formatC(currentValue[i], format = "f", digits = digits, big.mark = ",")
+      }
+    }
+  currentValue[is.numeric(currentValue)] <- currentValueTemp[is.numeric(currentValue)]
+  }
+  if (translate) {
+    currentValue <- Hmisc::latexTranslate(currentValue)
+  }
 }
