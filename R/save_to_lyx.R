@@ -65,6 +65,45 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   if (n_exist == 1) message("One value replaced")
 }
 
+#' Title
+#'
+#' @param currentName a
+#' @param latexFile a
+#'
+#'
+#' @export
+#'
+#'
+remove_from_lyx <- function(currentName, latexFile) {
+
+  if(!file.exists(latexFile)) stop("File does not exist")
+  DATA <- data.table::fread(latexFile, sep = " ", header = FALSE, col.names = c("name", "value"))
+  names_not_found <- NULL
+  for(iterateName in currentName){
+    if(!iterateName %in% gsub("\\\\newcommand\\\\", "",DATA$name)){
+      names_not_found <- c(names_not_found,n)
+    }
+  }
+  n <- length(names_not_found)
+  if(!is.null(names_not_found)){
+    if(n>1){
+    names_not_found <- paste(names_not_found, collapse = ", ")
+    warning(paste0(names_not_found, " were not found in the file"))
+    } else {
+      warning(paste0(names_not_found, " was not found in the file"))
+    }
+  }
+  DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
+  # Write values to file
+  first <- 1 # iterateName=DATA$name[1]
+  for (iterateName in DATA$name) {
+    myAppend <- ifelse(first == 0, TRUE, FALSE)
+    iterateValue <- DATA[name == iterateName, value]
+    write(paste0(iterateName, " ", iterateValue), file = latexFile, append = myAppend)
+    first <- 0
+  }
+}
+
 
 #' Formats values for lyx
 #'
@@ -74,7 +113,7 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
 #' @keywords internal
 
 format_values <- function(currentValue, percent,  accuracy, digits, translate) {
-  if (is.numeric(currentValue[i])) {
+  if (is.numeric(currentValue)) {
     n <- length(currentValue)
    currentValueTemp <- vector("character", length = n)
     for (i in 1:n) {
@@ -89,4 +128,5 @@ format_values <- function(currentValue, percent,  accuracy, digits, translate) {
   if (translate) {
     currentValue <- Hmisc::latexTranslate(currentValue)
   }
+  return(currentValue)
 }
