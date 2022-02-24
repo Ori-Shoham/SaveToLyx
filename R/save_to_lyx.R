@@ -15,7 +15,7 @@
 #'
 #'
 save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, translate=TRUE,
-                      digits = 2, percent=FALSE, accuracy=1, dataFile = NULL) {
+                      digits = 2, percent=FALSE, accuracy=1) {
   # Test for valid inputs
   if(any(!grepl("[^A-Za-z]", currentName))) {
     stop("Names must consist of letters only")
@@ -47,33 +47,20 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   }
 
   # Get current values
-  if (!is.null(dataFile)) {
-    if (file.exists(dataFile)) {
-      DATA <- readRDS(dataFile)
-      DATA = DATA[name!=currentName]
-    } else {
-      DATA = data.table::data.table()
-      DATA = rbind(DATA, list(name=currentName, value=currentValue, lastUpdated = Sys.time()))
-    }
-  } else {
-    if (file.exists(latexFile) & file.size(latexFile)>10) {
+  if (file.exists(latexFile) & file.size(latexFile)>10) {
       DATA <- data.table::fread(latexFile, sep=" ", header = FALSE, col.names = c("name", "value"))
       #DATA[, name:=gsub("\\\\newcommand\\\\", "", name)]
       #DATA[, value:=gsub("^\\{", "", gsub("}$", "", value))]
       DATA = DATA[gsub("\\\\newcommand\\\\", "", name)!=currentName]
-    } else {
+  } else {
       DATA = data.table::data.table()
     }
-    DATA = rbind(DATA, list(name=paste0("\\newcommand\\", currentName), value=paste0("{", currentValue ,"}")))
-  }
+  DATA = rbind(DATA, list(name=paste0("\\newcommand\\", currentName), value=paste0("{", currentValue ,"}")))
 
   DATA = unique(DATA)
   DATA = DATA[order(name)]
   data.table::setkey(DATA, "name")
 
-  if (!is.null(dataFile)) {
-    saveRDS(DATA, file = dataFile)
-  }
 
   first = 1; # iterateName=DATA$name[1]
   for(iterateName in DATA$name) {
