@@ -64,7 +64,7 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   DATA <- DATA[order(name)]
   data.table::setkey(DATA, "name")
 
-
+  # Write values to file
   first <- 1 # iterateName=DATA$name[1]
   for (iterateName in DATA$name) {
     myAppend <- ifelse(first == 0, TRUE, FALSE)
@@ -72,6 +72,8 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
     write(paste0(iterateName, " ", iterateValue), file = latexFile, append = myAppend)
     first <- 0
   }
-  if (n_exist > 1) cat(paste0(n_exist, " values replaced"))
-  if (n_exist == 1) cat("One value replaced")
+
+  # Warn about replacements
+  if (n_exist > 1) message(paste0(n_exist, " values replaced"))
+  if (n_exist == 1) message("One value replaced")
 }
