@@ -29,15 +29,17 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   }
   n <- length(currentValue)
   # Format values
+  currentValueTemp <- vector("character", length = n)
   for (i in 1:n) {
     if (is.numeric(currentValue[i])) {
       if ((percent+rep(0,n))[i]) {
-        currentValue[i] = scales::percent(currentValue[i], accuracy=accuracy, big.mark = ",")
+        currentValueTemp[i] = scales::percent(currentValue[i], accuracy=accuracy, big.mark = ",")
       } else {
-        currentValue[i] = formatC(currentValue[i], format = "f", digits = digits,  big.mark = ",")
+        currentValueTemp[i] = formatC(currentValue[i], format = "f", digits = digits,  big.mark = ",")
       }
     }
   }
+  currentValue[is.numeric(currentValue)] <- currentValueTemp[is.numeric(currentValue)]
 
   if (translate==TRUE) {
     currentValue = Hmisc::latexTranslate(currentValue)
@@ -48,7 +50,7 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
       DATA <- data.table::fread(latexFile, sep=" ", header = FALSE, col.names = c("name", "value"))
       #DATA[, name:=gsub("\\\\newcommand\\\\", "", name)]
       #DATA[, value:=gsub("^\\{", "", gsub("}$", "", value))]
-      DATA = DATA[!gsub("\\\\newcommand\\\\", "", name)%in% currentName]
+      DATA = DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
   } else {
       DATA = data.table::data.table()
     }
