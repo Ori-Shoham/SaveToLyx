@@ -7,13 +7,14 @@
 #' @param digits a
 #' @param percent a
 #' @param accuracy a
+#' @param replace a
 #'
 #' @export
 #' @import data.table
 #'
 #'
 save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, translate=TRUE,
-                      digits = 2, percent=FALSE, accuracy=1) {
+                      digits = 2, percent=FALSE, accuracy=1, replaceValues = TRUE) {
   # Test for valid inputs
   if(any(grepl("[^A-Za-z]", currentName))) {
     stop("Names must consist of letters only")
@@ -41,18 +42,21 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   }
   currentValue[is.numeric(currentValue)] <- currentValueTemp[is.numeric(currentValue)]
 
-  if (translate==TRUE) {
+  if (translate) {
     currentValue = Hmisc::latexTranslate(currentValue)
   }
 
   # Get current values
   if (file.exists(latexFile) & file.size(latexFile)>10) {
       DATA <- data.table::fread(latexFile, sep=" ", header = FALSE, col.names = c("name", "value"))
-      #DATA[, name:=gsub("\\\\newcommand\\\\", "", name)]
-      #DATA[, value:=gsub("^\\{", "", gsub("}$", "", value))]
-      DATA = DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
+      n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% currentName,.N]
+      if(!replaceValues & n_exist>0){
+        stop("currentName contains existing names")
+      }
+      DATA <-  DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
   } else {
       DATA = data.table::data.table()
+      n_exist <- 0
     }
   DATA = rbind(DATA, list(name=paste0("\\newcommand\\", currentName), value=paste0("{", currentValue ,"}")))
 
@@ -68,6 +72,8 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
     write(paste0(iterateName, " ", iterateValue), file=latexFile, append=myAppend)
     first = 0
   }
+  if (n_exist>1)  cat(paste0(n_exist," values replaced"))
+  if
 }
 
 
