@@ -12,7 +12,7 @@ save_to_lyx(
   digits = 2,
   percent = FALSE,
   accuracy = 1,
-  replaceValues = TRUE
+  replace = TRUE
 )
 }
 \arguments{
