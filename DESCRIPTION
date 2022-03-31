@@ -2,7 +2,7 @@ Package: savetolyx
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Ro'ee", "Levy", , "levyroee@gmail.com", role = c("aut", "cre")),
+    person("Ro'ee", "Levy", , "levyroee@gmail.com", role = c("aut")),
     person("Ori", "Shoham", , "ori.shoham1@gmail.com", role = c("aut", "cre"))
   )
 Description: What the package does (one paragraph).
