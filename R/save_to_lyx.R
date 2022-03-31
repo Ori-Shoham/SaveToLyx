@@ -14,7 +14,7 @@
 #'
 #'
 save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, translate = TRUE,
-                        digits = 2, percent = FALSE, accuracy = 1, replaceValues = TRUE) {
+                        digits = 2, percent = FALSE, accuracy = 1, replace = TRUE) {
   # Test for valid inputs
   if (any(grepl("[^A-Za-z]", currentName))) {
     stop("Names must consist of letters only")
@@ -37,7 +37,7 @@ save_to_lyx <- function(currentValue, currentName, latexFile = dataLyxOutput, tr
   if (file.exists(latexFile) & file.size(latexFile) > 10) {
     DATA <- data.table::fread(latexFile, sep = " ", header = FALSE, col.names = c("name", "value"))
     n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% currentName, .N]
-    if (!replaceValues & n_exist > 0) {
+    if (!replace & n_exist > 0) {
       stop("currentName contains existing names")
     }
     DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
@@ -115,7 +115,7 @@ remove_from_lyx <- function(currentName, latexFile) {
 format_values <- function(currentValue, percent,  accuracy, digits, translate) {
   if (is.numeric(currentValue)) {
     n <- length(currentValue)
-   currentValueTemp <- vector("character", length = n)
+    currentValueTemp <- vector("character", length = n)
     for (i in 1:n) {
          if ((percent + rep(0, n))[i]) {
         currentValueTemp[i] <- scales::percent(currentValue[i], accuracy = accuracy, big.mark = ",")
@@ -123,7 +123,7 @@ format_values <- function(currentValue, percent,  accuracy, digits, translate) {
         currentValueTemp[i] <- formatC(currentValue[i], format = "f", digits = digits, big.mark = ",")
       }
     }
-  currentValue[is.numeric(currentValue)] <- currentValueTemp[is.numeric(currentValue)]
+  currentValue <- currentValueTemp
   }
   if (translate) {
     currentValue <- Hmisc::latexTranslate(currentValue)
