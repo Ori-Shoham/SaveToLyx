@@ -7,14 +7,14 @@
 #' @param digits a
 #' @param percent a
 #' @param accuracy a
-#' @param replace a
+#' @param override a
 #'
 #' @export
 #' @import data.table
 #'
 #'
 save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
-                        digits = 2, percent = FALSE, accuracy = 1, replace = TRUE) {
+                        digits = 2, percent = FALSE, accuracy = 1, override = TRUE) {
   # Test for valid inputs
   if (any(grepl("[^A-Za-z]", currentName))) {
     stop("Names must consist of letters only")
@@ -39,7 +39,7 @@ save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
   if (file.exists(latexFile) & file.size(latexFile) > 10) {
     DATA <- data.table::fread(latexFile, sep = " ", header = FALSE, col.names = c("name", "value"))
     n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% currentName, .N]
-    if (!replace & n_exist > 0) {
+    if (!override & n_exist > 0) {
       stop("currentName contains existing names")
     }
     DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
@@ -62,9 +62,9 @@ save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
     first <- 0
   }
 
-  # Warn about replacements
-  if (n_exist > 1) message(paste0(n_exist, " values replaced"))
-  if (n_exist == 1) message("One value replaced")
+  # Warn about overrides
+  if (n_exist > 1) message(paste0(n_exist, " values overriden"))
+  if (n_exist == 1) message("One value overriden")
 }
 
 #' Formats values for lyx
