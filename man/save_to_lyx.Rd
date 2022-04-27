@@ -12,7 +12,7 @@ save_to_lyx(
   digits = 2,
   percent = FALSE,
   accuracy = 1,
-  replace = TRUE
+  override = TRUE
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ save_to_lyx(
 
 \item{accuracy}{a}
 
-\item{replace}{a}
+\item{override}{a}
 }
 \description{
 Title
