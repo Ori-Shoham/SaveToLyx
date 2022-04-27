@@ -28,6 +28,8 @@ save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
   if (length(percent) > 1 & length(percent) != length(currentName)) {
     stop("percent must be of length 1 or of the same length as values and names")
   }
+  #technical solution to notes
+  name <- value <- NULL
 
   # Format values
   currentValue <- format_values(currentValue, percent, accuracy, digits , translate)
