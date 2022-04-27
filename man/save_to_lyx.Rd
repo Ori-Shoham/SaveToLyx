@@ -7,7 +7,7 @@
 save_to_lyx(
   currentValue,
   currentName,
-  latexFile = dataLyxOutput,
+  latexFile,
   translate = TRUE,
   digits = 2,
   percent = FALSE,
