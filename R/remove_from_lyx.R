@@ -1,7 +1,6 @@
 #' Title
 #'
-#' @param currentName a
-#' @param latexFile a
+#' @inheritParams save_to_lyx
 #'
 #'
 #' @export
@@ -36,12 +35,17 @@ remove_from_lyx <- function(currentName, latexFile) {
   }
   # Remove values from data
   DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
-  # Write remaining values to file
-  first <- 1 # iterateName=DATA$name[1]
-  for (iterateName in DATA$name) {
-    myAppend <- ifelse(first == 0, TRUE, FALSE)
-    iterateValue <- DATA[name == iterateName, value]
-    write(paste0(iterateName, " ", iterateValue), file = latexFile, append = myAppend)
-    first <- 0
+  # Write remaining values to file if there are any, else - remove file
+  if(nrow(DATA) > 0){
+    first <- 1 # iterateName=DATA$name[1]
+    for (iterateName in DATA$name) {
+      myAppend <- ifelse(first == 0, TRUE, FALSE)
+      iterateValue <- DATA[name == iterateName, value]
+      write(paste0(iterateName, " ", iterateValue), file = latexFile, append = myAppend)
+      first <- 0
+    }
+  }else{
+    unlink(latexFile)
+    warning(paste0("All values were removed. ", latexFile, " was deleted."))
   }
 }
