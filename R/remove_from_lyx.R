@@ -6,11 +6,21 @@
 #' @export
 #'
 #'
-remove_from_lyx <- function(currentName, latexFile) {
+remove_from_lyx <- function(currentName, latexFile, path = NULL) {
 
-  if(!file.exists(latexFile)) stop("File does not exist")
+  if (!tools::file_ext(latexFile) %in% c("","tex")){
+    stop("latexFile should be a .tex file")
+  }
 
-  #technical solution to notes
+  # Construct file name
+  if (tools::file_ext(latexFile) == "") latexFile <- paste0(latexFile, ".tex")
+  if (!is.null(path)) {
+    latexFile <- file.path(path, latexFile)
+  }
+
+  if (!file.exists(latexFile)) stop("File does not exist")
+
+  # technical solution to notes
   name <- value <- NULL
 
   # Read file
@@ -18,16 +28,18 @@ remove_from_lyx <- function(currentName, latexFile) {
 
   # Warn if any of the variable names is not in the file
   names_not_found <- NULL
-  for(iterateName in currentName){
-    if(!iterateName %in% gsub("\\\\newcommand\\\\", "",DATA$name)){
+  for (iterateName in currentName) {
+    if (!iterateName %in% gsub("\\\\newcommand\\\\", "", DATA$name)) {
       names_not_found <- c(names_not_found, iterateName)
     }
   }
   n <- length(names_not_found)
-  if(!is.null(names_not_found)){
-    if(n>1){
-      names_not_found <- paste0('"', paste(names_not_found[1:(n-1)], collapse = '", "'),
-                                '& "' , names_not_found[n],'"')
+  if (!is.null(names_not_found)) {
+    if (n > 1) {
+      names_not_found <- paste0(
+        '"', paste(names_not_found[1:(n - 1)], collapse = '", "'),
+        '& "', names_not_found[n], '"'
+      )
       warning(paste0(names_not_found, " were not found in the file"))
     } else {
       warning(paste0(names_not_found, " was not found in the file"))
@@ -36,7 +48,7 @@ remove_from_lyx <- function(currentName, latexFile) {
   # Remove values from data
   DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
   # Write remaining values to file if there are any, else - remove file
-  if(nrow(DATA) > 0){
+  if (nrow(DATA) > 0) {
     first <- 1 # iterateName=DATA$name[1]
     for (iterateName in DATA$name) {
       myAppend <- ifelse(first == 0, TRUE, FALSE)
@@ -44,7 +56,7 @@ remove_from_lyx <- function(currentName, latexFile) {
       write(paste0(iterateName, " ", iterateValue), file = latexFile, append = myAppend)
       first <- 0
     }
-  }else{
+  } else {
     unlink(latexFile)
     warning(paste0("All values were removed. ", latexFile, " was deleted."))
   }

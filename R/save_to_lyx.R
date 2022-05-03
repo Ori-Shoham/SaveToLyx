@@ -3,6 +3,7 @@
 #' @param currentValue a
 #' @param currentName a
 #' @param latexFile a
+#' @param path a
 #' @param translate a
 #' @param digits a
 #' @param percent a
@@ -13,7 +14,7 @@
 #' @import data.table
 #'
 #'
-save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
+save_to_lyx <- function(currentValue, currentName, latexFile, path = NULL, translate = TRUE,
                         digits = 2, percent = FALSE, accuracy = 1, override = TRUE) {
   # Test for valid inputs
   if (any(grepl("[^A-Za-z]", currentName))) {
@@ -28,16 +29,27 @@ save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
   if (length(percent) > 1 & length(percent) != length(currentName)) {
     stop("percent must be of length 1 or of the same length as values and names")
   }
-  #technical solution to notes
+  if (!tools::file_ext(latexFile) %in% c("","tex")){
+    stop("latexFile should be a .tex file")
+  }
+  # Technical solution to notes
   name <- value <- NULL
 
   # Format values
-  currentValue <- format_values(currentValue, percent, accuracy, digits , translate)
+  currentValue <- format_values(currentValue, percent, accuracy, digits, translate)
 
+  # Construct file name
+  if (tools::file_ext(latexFile) == "") latexFile <- paste0(latexFile, ".tex")
+  if (!is.null(path)) {
+    latexFile <- file.path(path, latexFile)
+  }
 
   # Get current values
   if (file.exists(latexFile) & file.size(latexFile) > 10) {
-    DATA <- data.table::fread(latexFile, sep = " ", header = FALSE, col.names = c("name", "value"))
+    DATA <- data.table::fread(
+      latexFile,
+      sep = " ", header = FALSE, col.names = c("name", "value")
+    )
     n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% currentName, .N]
     if (!override & n_exist > 0) {
       stop("currentName contains existing names")
@@ -47,7 +59,10 @@ save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
     DATA <- data.table::data.table()
     n_exist <- 0
   }
-  DATA <- rbind(DATA, list(name = paste0("\\newcommand\\", currentName), value = paste0("{", currentValue, "}")))
+  DATA <- rbind(DATA, list(
+    name = paste0("\\newcommand\\", currentName),
+    value = paste0("{", currentValue, "}")
+  ))
 
   DATA <- unique(DATA)
   DATA <- DATA[order(name)]
@@ -74,15 +89,21 @@ save_to_lyx <- function(currentValue, currentName, latexFile , translate = TRUE,
 #' @return A formatted character vector.
 #' @keywords internal
 
-format_values <- function(currentValue, percent,  accuracy, digits, translate) {
+format_values <- function(currentValue, percent, accuracy, digits, translate) {
   if (is.numeric(currentValue)) {
     n <- length(currentValue)
     currentValueTemp <- vector("character", length = n)
     for (i in 1:n) {
       if ((percent + rep(0, n))[i]) {
-        currentValueTemp[i] <- scales::percent(currentValue[i], accuracy = accuracy, big.mark = ",")
+        currentValueTemp[i] <- scales::percent(
+          currentValue[i],
+          accuracy = accuracy, big.mark = ","
+        )
       } else {
-        currentValueTemp[i] <- formatC(currentValue[i], format = "f", digits = digits, big.mark = ",")
+        currentValueTemp[i] <- formatC(
+          currentValue[i],
+          format = "f", digits = digits, big.mark = ","
+        )
       }
     }
     currentValue <- currentValueTemp
@@ -92,7 +113,5 @@ format_values <- function(currentValue, percent,  accuracy, digits, translate) {
   }
   return(currentValue)
 }
-
-
 
 
