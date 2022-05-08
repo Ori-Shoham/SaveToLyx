@@ -8,6 +8,7 @@ save_to_lyx(
   currentValue,
   currentName,
   latexFile,
+  path = NULL,
   translate = TRUE,
   digits = 2,
   percent = FALSE,
@@ -22,6 +23,8 @@ save_to_lyx(
 
 \item{latexFile}{a}
 
+\item{path}{a}
+
 \item{translate}{a}
 
 \item{digits}{a}
@@ -34,4 +37,7 @@ save_to_lyx(
 }
 \description{
 Title
+}
+\examples{
+a
 }

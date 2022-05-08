@@ -4,13 +4,19 @@
 \alias{remove_from_lyx}
 \title{Title}
 \usage{
-remove_from_lyx(currentName, latexFile)
+remove_from_lyx(currentName, latexFile, path = NULL)
 }
 \arguments{
 \item{currentName}{a}
 
 \item{latexFile}{a}
+
+\item{path}{a}
 }
 \description{
 Title
+}
+\examples{
+a
+
 }

@@ -4,7 +4,7 @@
 #'
 #'
 #' @export
-#'
+#' @examples a
 #'
 remove_from_lyx <- function(currentName, latexFile, path = NULL) {
 

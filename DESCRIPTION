@@ -12,7 +12,8 @@ BugReports: https://github.com/Ori-Shoham/savetolyx/issues
 Imports: 
     data.table,
     Hmisc,
-    scales
+    scales,
+    tools
 Suggests: 
     testthat (>= 3.0.0),
     withr
