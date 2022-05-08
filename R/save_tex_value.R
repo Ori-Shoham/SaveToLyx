@@ -14,7 +14,7 @@
 #' @import data.table
 #'
 #' @examples a
-save_to_lyx <- function(currentValue, currentName, latexFile, path = NULL, translate = TRUE,
+save_tex_value <- function(currentValue, currentName, latexFile, path = NULL, translate = TRUE,
                         digits = 2, percent = FALSE, accuracy = 1, override = TRUE) {
   # Test for valid inputs
   if (any(grepl("[^A-Za-z]", currentName))) {
