@@ -1,21 +1,21 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# savetolyx
+# savetexvalue
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of savetolyx is to …
+The goal of savetexvalue is to …
 
 ## Installation
 
-You can install the development version of savetolyx from
+You can install the development version of savetexvalue from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Ori-Shoham/savetolyx")
+devtools::install_github("Ori-Shoham/savetexvalue")
 ```
 
 ## Example
@@ -23,7 +23,7 @@ devtools::install_github("Ori-Shoham/savetolyx")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(savetolyx)
+library(savetexvalue)
 ## basic example code
 test_file_1 <- paste0(tempfile(),".tex")
 withr::local_file(save_to_lyx(currentValue = 1:26, currentName = letters, latexFile = test_file_1))

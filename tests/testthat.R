@@ -1,4 +1,4 @@
 library(testthat)
-library(savetolyx)
+library(savetexvalue)
 
-test_check("savetolyx")
+test_check("savetexvalue")
