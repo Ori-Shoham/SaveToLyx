@@ -1,34 +1,32 @@
 #' Title
 #'
 #' @param names ab
-#' @param nrows ab
-#' @inheritParams save_to_lyx
+#' @inheritParams save_tex_value
 #'
 #' @return
 #' @export
 #'
 #' @examples a
-print_tex_value <- function(latexFile, path = NULL, names = NULL, nrows = NULL) {
+print_tex_value <- function(file_name, path = NULL, names = NULL) {
 
-  if (!tools::file_ext(latexFile) %in% c("","tex")){
-    stop("latexFile should be a .tex file")
+  if (!tools::file_ext(file_name) %in% c("","tex")){
+    stop("file_name should be a .tex file")
   }
 
   # Construct file name
-  if (tools::file_ext(latexFile) == "") latexFile <- paste0(latexFile, ".tex")
+  if (tools::file_ext(file_name) == "") file_name <- paste0(file_name, ".tex")
   if (!is.null(path)) {
-    latexFile <- file.path(path, latexFile)
+    file_name <- file.path(path, file_name)
   }
 
-  if (!file.exists(latexFile)) stop("File does not exist")
+  if (!file.exists(file_name)) stop("File does not exist")
 
   # technical solution to notes
   name <- value <- NULL
 
   # Read file
-  DATA <- data.table::fread(latexFile, sep = " ", header = FALSE, col.names = c("name", "value"))
+  DATA <- data.table::fread(file_name, sep = " ", header = FALSE, col.names = c("name", "value"))
   DATA[, ":="(name = gsub("\\newcommand\\","",name, fixed = TRUE), value = gsub("[\\{\\}\\\\]","",value))]
   if (!is.null(names)) DATA <- DATA[name %in% names]
-  if(is.null(nrows))  print(DATA)
-  else print(DATA, nrows = nrows)
+  print(DATA)
 }

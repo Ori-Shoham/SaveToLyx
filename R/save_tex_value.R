@@ -2,7 +2,7 @@
 #'
 #' @param values a
 #' @param names a
-#' @param latexFile a
+#' @param file_name a
 #' @param path a
 #' @param translate a
 #' @param digits a
@@ -14,7 +14,7 @@
 #' @import data.table
 #'
 #' @examples a
-save_tex_value <- function(values, names, latexFile, path = NULL, translate = TRUE,
+save_tex_value <- function(values, names, file_name, path = NULL, translate = TRUE,
                         digits = 2, percent = FALSE, accuracy = 1, override = TRUE) {
   # Test for valid inputs
   if (any(grepl("[^A-Za-z]", names))) {
@@ -29,8 +29,8 @@ save_tex_value <- function(values, names, latexFile, path = NULL, translate = TR
   if (length(percent) > 1 & length(percent) != length(names)) {
     stop("percent must be of length 1 or of the same length as values and names")
   }
-  if (!tools::file_ext(latexFile) %in% c("","tex")){
-    stop("latexFile should be a .tex file")
+  if (!tools::file_ext(file_name) %in% c("","tex")){
+    stop("file_name should be a .tex file")
   }
   # Technical solution to notes
   name <- value <- NULL
@@ -39,15 +39,15 @@ save_tex_value <- function(values, names, latexFile, path = NULL, translate = TR
   values <- format_values(values, percent, accuracy, digits, translate)
 
   # Construct file name
-  if (tools::file_ext(latexFile) == "") latexFile <- paste0(latexFile, ".tex")
+  if (tools::file_ext(file_name) == "") file_name <- paste0(file_name, ".tex")
   if (!is.null(path)) {
-    latexFile <- file.path(path, latexFile)
+    file_name <- file.path(path, file_name)
   }
 
   # Get current values
-  if (file.exists(latexFile) & file.size(latexFile) > 10) {
+  if (file.exists(file_name) & file.size(file_name) > 10) {
     DATA <- data.table::fread(
-      latexFile,
+      file_name,
       sep = " ", header = FALSE, col.names = c("name", "value")
     )
     n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% names, .N]
@@ -73,7 +73,7 @@ save_tex_value <- function(values, names, latexFile, path = NULL, translate = TR
   for (iterateName in DATA$name) {
     myAppend <- ifelse(first == 0, TRUE, FALSE)
     iterateValue <- DATA[name == iterateName, value]
-    write(paste0(iterateName, " ", iterateValue), file = latexFile, append = myAppend)
+    write(paste0(iterateName, " ", iterateValue), file = file_name, append = myAppend)
     first <- 0
   }
 
@@ -84,7 +84,7 @@ save_tex_value <- function(values, names, latexFile, path = NULL, translate = TR
 
 #' Formats values for lyx
 #'
-#' @inheritParams save_to_lyx
+#' @inheritParams save_tex_value
 #'
 #' @return A formatted character vector.
 #' @keywords internal

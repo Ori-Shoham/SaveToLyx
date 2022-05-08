@@ -1,30 +1,30 @@
 #' Title
 #'
-#' @inheritParams save_to_lyx
+#' @inheritParams save_tex_value
 #'
 #'
 #' @export
 #' @examples a
 #'
-remove_tex_value <- function(names, latexFile, path = NULL) {
+remove_tex_value <- function(names, file_name, path = NULL) {
 
-  if (!tools::file_ext(latexFile) %in% c("","tex")){
-    stop("latexFile should be a .tex file")
+  if (!tools::file_ext(file_name) %in% c("","tex")){
+    stop("file_name should be a .tex file")
   }
 
   # Construct file name
-  if (tools::file_ext(latexFile) == "") latexFile <- paste0(latexFile, ".tex")
+  if (tools::file_ext(file_name) == "") file_name <- paste0(file_name, ".tex")
   if (!is.null(path)) {
-    latexFile <- file.path(path, latexFile)
+    file_name <- file.path(path, file_name)
   }
 
-  if (!file.exists(latexFile)) stop("File does not exist")
+  if (!file.exists(file_name)) stop("File does not exist")
 
   # technical solution to notes
   name <- value <- NULL
 
   # Read file
-  DATA <- data.table::fread(latexFile, sep = " ", header = FALSE, col.names = c("name", "value"))
+  DATA <- data.table::fread(file_name, sep = " ", header = FALSE, col.names = c("name", "value"))
 
   # Warn if any of the variable names is not in the file
   names_not_found <- NULL
@@ -53,11 +53,11 @@ remove_tex_value <- function(names, latexFile, path = NULL) {
     for (iterateName in DATA$name) {
       myAppend <- ifelse(first == 0, TRUE, FALSE)
       iterateValue <- DATA[name == iterateName, value]
-      write(paste0(iterateName, " ", iterateValue), file = latexFile, append = myAppend)
+      write(paste0(iterateName, " ", iterateValue), file = file_name, append = myAppend)
       first <- 0
     }
   } else {
-    unlink(latexFile)
-    warning(paste0("All values were removed. ", latexFile, " was deleted."))
+    unlink(file_name)
+    warning(paste0("All values were removed. ", file_name, " was deleted."))
   }
 }
