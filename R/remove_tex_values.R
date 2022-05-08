@@ -6,7 +6,7 @@
 #' @export
 #' @examples a
 #'
-remove_from_lyx <- function(currentName, latexFile, path = NULL) {
+remove_tex_value <- function(names, latexFile, path = NULL) {
 
   if (!tools::file_ext(latexFile) %in% c("","tex")){
     stop("latexFile should be a .tex file")
@@ -28,7 +28,7 @@ remove_from_lyx <- function(currentName, latexFile, path = NULL) {
 
   # Warn if any of the variable names is not in the file
   names_not_found <- NULL
-  for (iterateName in currentName) {
+  for (iterateName in names) {
     if (!iterateName %in% gsub("\\\\newcommand\\\\", "", DATA$name)) {
       names_not_found <- c(names_not_found, iterateName)
     }
@@ -46,7 +46,7 @@ remove_from_lyx <- function(currentName, latexFile, path = NULL) {
     }
   }
   # Remove values from data
-  DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
+  DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% names]
   # Write remaining values to file if there are any, else - remove file
   if (nrow(DATA) > 0) {
     first <- 1 # iterateName=DATA$name[1]

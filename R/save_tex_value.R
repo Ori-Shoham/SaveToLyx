@@ -1,7 +1,7 @@
 #' Title
 #'
-#' @param currentValue a
-#' @param currentName a
+#' @param values a
+#' @param names a
 #' @param latexFile a
 #' @param path a
 #' @param translate a
@@ -14,19 +14,19 @@
 #' @import data.table
 #'
 #' @examples a
-save_tex_value <- function(currentValue, currentName, latexFile, path = NULL, translate = TRUE,
+save_tex_value <- function(values, names, latexFile, path = NULL, translate = TRUE,
                         digits = 2, percent = FALSE, accuracy = 1, override = TRUE) {
   # Test for valid inputs
-  if (any(grepl("[^A-Za-z]", currentName))) {
+  if (any(grepl("[^A-Za-z]", names))) {
     stop("Names must consist of letters only")
   }
-  if (any(duplicated(currentName))) {
+  if (any(duplicated(names))) {
     stop("Names must be unique")
   }
-  if (length(currentValue) != length(currentName)) {
+  if (length(values) != length(names)) {
     stop("Names and Values must be of compatible lengths")
   }
-  if (length(percent) > 1 & length(percent) != length(currentName)) {
+  if (length(percent) > 1 & length(percent) != length(names)) {
     stop("percent must be of length 1 or of the same length as values and names")
   }
   if (!tools::file_ext(latexFile) %in% c("","tex")){
@@ -36,7 +36,7 @@ save_tex_value <- function(currentValue, currentName, latexFile, path = NULL, tr
   name <- value <- NULL
 
   # Format values
-  currentValue <- format_values(currentValue, percent, accuracy, digits, translate)
+  values <- format_values(values, percent, accuracy, digits, translate)
 
   # Construct file name
   if (tools::file_ext(latexFile) == "") latexFile <- paste0(latexFile, ".tex")
@@ -50,18 +50,18 @@ save_tex_value <- function(currentValue, currentName, latexFile, path = NULL, tr
       latexFile,
       sep = " ", header = FALSE, col.names = c("name", "value")
     )
-    n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% currentName, .N]
+    n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% names, .N]
     if (!override & n_exist > 0) {
-      stop("currentName contains existing names")
+      stop("names contains existing names")
     }
-    DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% currentName]
+    DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% names]
   } else {
     DATA <- data.table::data.table()
     n_exist <- 0
   }
   DATA <- rbind(DATA, list(
-    name = paste0("\\newcommand\\", currentName),
-    value = paste0("{", currentValue, "}")
+    name = paste0("\\newcommand\\", names),
+    value = paste0("{", values, "}")
   ))
 
   DATA <- unique(DATA)
@@ -89,29 +89,29 @@ save_tex_value <- function(currentValue, currentName, latexFile, path = NULL, tr
 #' @return A formatted character vector.
 #' @keywords internal
 
-format_values <- function(currentValue, percent, accuracy, digits, translate) {
-  if (is.numeric(currentValue)) {
-    n <- length(currentValue)
-    currentValueTemp <- vector("character", length = n)
+format_values <- function(values, percent, accuracy, digits, translate) {
+  if (is.numeric(values)) {
+    n <- length(values)
+    valuesTemp <- vector("character", length = n)
     for (i in 1:n) {
       if ((percent + rep(0, n))[i]) {
-        currentValueTemp[i] <- scales::percent(
-          currentValue[i],
+        valuesTemp[i] <- scales::percent(
+          values[i],
           accuracy = accuracy, big.mark = ","
         )
       } else {
-        currentValueTemp[i] <- formatC(
-          currentValue[i],
+        valuesTemp[i] <- formatC(
+          values[i],
           format = "f", digits = digits, big.mark = ","
         )
       }
     }
-    currentValue <- currentValueTemp
+    values <- valuesTemp
   }
   if (translate) {
-    currentValue <- Hmisc::latexTranslate(currentValue)
+    values <- Hmisc::latexTranslate(values)
   }
-  return(currentValue)
+  return(values)
 }
 
 
