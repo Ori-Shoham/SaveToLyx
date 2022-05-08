@@ -48,16 +48,16 @@ remove_tex_value <- function(names, file_name, path = NULL) {
   # Remove values from data
   DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% names]
   # Write remaining values to file if there are any, else - remove file
-
-  first <- 1 # iterateName=DATA$name[1]
-  for (iterateName in DATA$name) {
-    myAppend <- ifelse(first == 0, TRUE, FALSE)
-    iterateValue <- DATA[name == iterateName, value]
-    write(paste0(iterateName, " ", iterateValue), file = file_name, append = myAppend)
-    first <- 0
-  }
-
-  if (nrow(DATA) == 0) {
-    message("All values were removed.")
+  if (nrow(DATA) > 0) {
+    first <- 1 # iterateName=DATA$name[1]
+    for (iterateName in DATA$name) {
+      myAppend <- ifelse(first == 0, TRUE, FALSE)
+      iterateValue <- DATA[name == iterateName, value]
+      write(paste0(iterateName, " ", iterateValue), file = file_name, append = myAppend)
+      first <- 0
+    }
+  } else {
+    write("", file = file_name, append = FALSE)
+    message(paste0("All values were removed."))
   }
 }
