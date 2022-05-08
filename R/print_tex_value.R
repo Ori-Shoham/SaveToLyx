@@ -9,16 +9,8 @@
 #' @examples a
 print_tex_value <- function(file_name, path = NULL, names = NULL) {
 
-  if (!tools::file_ext(file_name) %in% c("","tex")){
-    stop("file_name should be a .tex file")
-  }
-
-  # Construct file name
-  if (tools::file_ext(file_name) == "") file_name <- paste0(file_name, ".tex")
-  if (!is.null(path)) {
-    file_name <- file.path(path, file_name)
-  }
-
+  # Test and format file name
+  file_name <- handle_file_name(file_name, path)
   if (!file.exists(file_name)) stop("File does not exist")
 
   # technical solution to notes

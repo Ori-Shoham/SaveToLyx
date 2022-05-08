@@ -29,20 +29,12 @@ save_tex_value <- function(values, names, file_name, path = NULL, translate = TR
   if (length(percent) > 1 & length(percent) != length(names)) {
     stop("percent must be of length 1 or of the same length as values and names")
   }
-  if (!tools::file_ext(file_name) %in% c("","tex")){
-    stop("file_name should be a .tex file")
-  }
+
   # Technical solution to notes
   name <- value <- NULL
 
-  # Format values
-  values <- format_values(values, percent, accuracy, digits, translate)
-
-  # Construct file name
-  if (tools::file_ext(file_name) == "") file_name <- paste0(file_name, ".tex")
-  if (!is.null(path)) {
-    file_name <- file.path(path, file_name)
-  }
+  # Test and format file name
+  file_name <- handle_file_name(file_name, path)
 
   # Get current values
   if (file.exists(file_name) & file.size(file_name) > 10) {
@@ -115,3 +107,21 @@ format_values <- function(values, percent, accuracy, digits, translate) {
 }
 
 
+#' Title
+#'
+#' @inheritParams save_tex_value
+#'
+#' @return a complete file name (with path and extension)
+#'
+#' @keywords internal
+handle_file_name <- function(file_name, path = NULL){
+  if (!tools::file_ext(file_name) %in% c("","tex")){
+    stop("The file should be a .tex file")
+  }
+
+  # Construct file name
+  if (tools::file_ext(file_name) == "") file_name <- paste0(file_name, ".tex")
+  if (!is.null(path)) file_name <- file.path(path, file_name)
+  return(file_name)
+
+}
