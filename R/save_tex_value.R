@@ -1,19 +1,50 @@
-#' Title
+#' Save values to a tex file
 #'
-#' @param values a
-#' @param names a
-#' @param file_name a
-#' @param path a
-#' @param translate a
-#' @param digits a
-#' @param percent a
-#' @param accuracy a
-#' @param override a
+#' \code{save_tex_value} saves pairs of values and names of commands to be
+#' associated with them to a special formatted '.tex' file.
+#'
+#' @param values Numeric, character or logical vector of values to be saved.
+#'   Logical values will be saved as character.
+#' @param names Character vector of names. Each name must be unique and can
+#'   consist of letters only.
+#' @param file_name File name to create on disk. \code{file_name} should have
+#'   either a \code{.tex} extension or no extension at all.
+#' @param path Path to the directory to save the file to. \code{path} and
+#'   \code{file_name} are combined to create fully qualified file name. If
+#'   \code{Null} and \code{file_name} does not specify a full file name defaults
+#'   to working directory.
+#' @param translate Logical indicating whether to save values in LaTeX format.
+#'   See \code{\link[Hmisc]{latexTranslate}}.
+#' @param digits The desired number of digits after the decimal point for
+#'   numeric non-percent values. Defaults to 2 digits after the decimal point.
+#' @param percent Logical scalar or vector. If \code{values} is a numeric vector
+#'   \code{percent} indicates whether to save values as percents or as is. If
+#'   you want only a subset of values to be saved as percents \code{percent}
+#'   should be a logical vector indicating the positions of these values.
+#' @param accuracy A number to round percent values to. Use (e.g.) 0.01 to show
+#'   2 decimal places of precision. Defaults to 1 i.e round to the nearest
+#'   integer.
+#' @param override Logical indicating whether to override values if a value with
+#'   the same name already exits in the file.
 #'
 #' @export
 #' @import data.table
 #'
-#' @examples a
+#' @examples \dontrun{
+#' file <- tempfile()
+#' save_tex_value(values = 1:3, names = c("a","b","c"), file_name = file)
+#'
+#' # Save percent values to the same file
+#' save_tex_value(values = 0.5, names = "halfPer", file_name = file, percent = TRUE)
+#'
+#' # override "a" with a different value
+#' a <- rnorm(1)
+#' save_tex_value(values = a, names = "a", file_name = file, digits = 4)
+#'
+#' # delete file with base::unlink()
+#' unlink(paste0(file,".tex"))
+#'
+#' }
 save_tex_value <- function(values, names, file_name, path = NULL, translate = TRUE,
                         digits = 2, percent = FALSE, accuracy = 1, override = TRUE) {
   # Test for valid inputs
@@ -33,6 +64,9 @@ save_tex_value <- function(values, names, file_name, path = NULL, translate = TR
   # Technical solution to notes
   name <- value <- NULL
 
+  # Format values
+  values <- format_values(values, percent, accuracy, digits, translate)
+
   # Test and format file name
   file_name <- handle_file_name(file_name, path)
 
@@ -44,7 +78,7 @@ save_tex_value <- function(values, names, file_name, path = NULL, translate = TR
     )
     n_exist <- DATA[gsub("\\\\newcommand\\\\", "", name) %in% names, .N]
     if (!override & n_exist > 0) {
-      stop("names contains existing names")
+      stop("override is set to FALSE and some of the names appear in your tex file")
     }
     DATA <- DATA[!gsub("\\\\newcommand\\\\", "", name) %in% names]
   } else {
@@ -99,7 +133,7 @@ format_values <- function(values, percent, accuracy, digits, translate) {
       }
     }
     values <- valuesTemp
-  }
+  } else values <- as.character(values)
   if (translate) {
     values <- Hmisc::latexTranslate(values)
   }
@@ -107,7 +141,11 @@ format_values <- function(values, percent, accuracy, digits, translate) {
 }
 
 
-#' Title
+#' Constructs fully qualified file name
+#'
+#' \code{hanle_file_name} checks the extension of \code{file_name}, breaks if it
+#' is not a '.tex' extension and adds '.tex' extension if no extension exists.
+#' If \code{path} is not \code{NULL} combines \code{path} and \code{file_name}.
 #'
 #' @inheritParams save_tex_value
 #'
@@ -125,3 +163,4 @@ handle_file_name <- function(file_name, path = NULL){
   return(file_name)
 
 }
+

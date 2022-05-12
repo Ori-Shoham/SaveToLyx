@@ -7,15 +7,23 @@
 format_values(values, percent, accuracy, digits, translate)
 }
 \arguments{
-\item{values}{a}
+\item{values}{Numeric, character or logical vector of values to be saved.
+Logical values will be saved as character.}
 
-\item{percent}{a}
+\item{percent}{Logical scalar or vector. If \code{values} is a numeric vector
+\code{percent} indicates whether to save values as percents or as is. If
+you want only a subset of values to be saved as percents \code{percent}
+should be a logical vector indicating the positions of these values.}
 
-\item{accuracy}{a}
+\item{accuracy}{A number to round percent values to. Use (e.g.) 0.01 to show
+2 decimal places of precision. Defaults to 1 i.e round to the nearest
+integer.}
 
-\item{digits}{a}
+\item{digits}{The desired number of digits after the decimal point for
+numeric non-percent values. Defaults to 2 digits after the decimal point.}
 
-\item{translate}{a}
+\item{translate}{Logical indicating whether to save values in LaTeX format.
+See \code{\link[Hmisc]{latexTranslate}}.}
 }
 \value{
 A formatted character vector.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/save_tex_value.R
 \name{save_tex_value}
 \alias{save_tex_value}
-\title{Title}
+\title{Save values to a tex file}
 \usage{
 save_tex_value(
   values,
@@ -17,27 +17,56 @@ save_tex_value(
 )
 }
 \arguments{
-\item{values}{a}
+\item{values}{Numeric, character or logical vector of values to be saved.
+Logical values will be saved as character.}
 
-\item{names}{a}
+\item{names}{Character vector of names. Each name must be unique and can
+consist of letters only.}
 
-\item{file_name}{a}
+\item{file_name}{File name to create on disk. \code{file_name} should have
+either a \code{.tex} extension or no extension at all.}
 
-\item{path}{a}
+\item{path}{Path to the directory to save the file to. \code{path} and
+\code{file_name} are combined to create fully qualified file name. If
+\code{Null} and \code{file_name} does not specify a full file name defaults
+to working directory.}
 
-\item{translate}{a}
+\item{translate}{Logical indicating whether to save values in LaTeX format.
+See \code{\link[Hmisc]{latexTranslate}}.}
 
-\item{digits}{a}
+\item{digits}{The desired number of digits after the decimal point for
+numeric non-percent values. Defaults to 2 digits after the decimal point.}
 
-\item{percent}{a}
+\item{percent}{Logical scalar or vector. If \code{values} is a numeric vector
+\code{percent} indicates whether to save values as percents or as is. If
+you want only a subset of values to be saved as percents \code{percent}
+should be a logical vector indicating the positions of these values.}
 
-\item{accuracy}{a}
+\item{accuracy}{A number to round percent values to. Use (e.g.) 0.01 to show
+2 decimal places of precision. Defaults to 1 i.e round to the nearest
+integer.}
 
-\item{override}{a}
+\item{override}{Logical indicating whether to override values if a value with
+the same name already exits in the file.}
 }
 \description{
-Title
+\code{save_tex_value} saves pairs of values and names of commands to be
+associated with them to a special formatted '.tex' file.
 }
 \examples{
-a
+\dontrun{
+file <- tempfile()
+save_tex_value(values = 1:3, names = c("a","b","c"), file_name = file)
+
+# Save percent values to the same file
+save_tex_value(values = 0.5, names = "halfPer", file_name = file, percent = TRUE)
+
+# override "a" with a different value
+a <- rnorm(1)
+save_tex_value(values = a, names = "a", file_name = file, digits = 4)
+
+# delete file with base::unlink()
+unlink(paste0(file,".tex"))
+
+}
 }

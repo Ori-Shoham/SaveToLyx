@@ -7,9 +7,13 @@
 handle_file_name(file_name, path = NULL)
 }
 \arguments{
-\item{file_name}{a}
+\item{file_name}{File name to create on disk. \code{file_name} should have
+either a \code{.tex} extension or no extension at all.}
 
-\item{path}{a}
+\item{path}{Path to the directory to save the file to. \code{path} and
+\code{file_name} are combined to create fully qualified file name. If
+\code{Null} and \code{file_name} does not specify a full file name defaults
+to working directory.}
 }
 \value{
 a complete file name (with path and extension)
