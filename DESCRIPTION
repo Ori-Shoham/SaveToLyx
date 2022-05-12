@@ -1,11 +1,16 @@
 Package: savetexvalue
-Title: What the Package Does (One Line, Title Case)
+Title: Manage Values Calculated in R for Projects Written in Tex
 Version: 0.0.0.9000
 Authors@R: c(
     person("Ro'ee", "Levy", , "levyroee@gmail.com", role = c("aut")),
     person("Ori", "Shoham", , "ori.shoham1@gmail.com", role = c("aut", "cre"))
   )
-Description: What the package does (one paragraph).
+Description: Create and manage a specific format of tex files for using
+    values calculated in R within your latex document. Each file conatins 
+    values and the names of the commands associated with them. Using these
+    files as inputs in your latex document allows you to use the values saved
+    in them by calling the command associated with them instead of copy-pasting
+    for your R session.
 License: MIT + file LICENSE
 URL: https://github.com/Ori-Shoham/savetexvalue
 BugReports: https://github.com/Ori-Shoham/savetexvalue/issues
