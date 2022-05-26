@@ -2,27 +2,37 @@
 % Please edit documentation in R/print_tex_value.R
 \name{print_tex_value}
 \alias{print_tex_value}
-\title{Title}
+\title{Print values out of a values-tex file}
 \usage{
 print_tex_value(file_name, path = NULL, names = NULL)
 }
 \arguments{
-\item{file_name}{File name to create on disk. \code{file_name} should have
-either a \code{.tex} extension or no extension at all.}
+\item{file_name}{File name to read from disk. file_name should have either a
+.tex extension or no extension at all.}
 
 \item{path}{Path to the directory to save the file to. \code{path} and
 \code{file_name} are combined to create fully qualified file name. If
 \code{Null} and \code{file_name} does not specify a full file name defaults
 to working directory.}
 
-\item{names}{ab}
+\item{names}{Character vector of names for printing.}
 }
 \value{
 
 }
 \description{
-Title
+Print values out of a values-tex file
 }
 \examples{
-a
+\dontrun{
+file <- tempfile()
+save_tex_value(values = 1:3, names = c("a","b","c"), file_name = file)
+
+# Print "a" and "b" out of file
+print_tex_value(file_name = files, names = c("a", "b"))
+
+# delete file with base::unlink()
+unlink(paste0(file,".tex"))
+
+}
 }

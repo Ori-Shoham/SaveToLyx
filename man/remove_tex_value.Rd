@@ -2,16 +2,16 @@
 % Please edit documentation in R/remove_tex_values.R
 \name{remove_tex_value}
 \alias{remove_tex_value}
-\title{Title}
+\title{Remove certain values from a values-tex file}
 \usage{
 remove_tex_value(names, file_name, path = NULL)
 }
 \arguments{
-\item{names}{Character vector of names. Each name must be unique and can
-consist of letters only.}
+\item{names}{Character vector of names specifying which values are to be
+removed.}
 
-\item{file_name}{File name to create on disk. \code{file_name} should have
-either a \code{.tex} extension or no extension at all.}
+\item{file_name}{File name containing values to be removed. file_name should
+have either a .tex extension or no extension at all.}
 
 \item{path}{Path to the directory to save the file to. \code{path} and
 \code{file_name} are combined to create fully qualified file name. If
@@ -19,9 +19,18 @@ either a \code{.tex} extension or no extension at all.}
 to working directory.}
 }
 \description{
-Title
+Remove certain values from a values-tex file
 }
 \examples{
-a
+\dontrun{
+file <- tempfile()
+save_tex_value(values = 1:3, names = c("a","b","c"), file_name = file)
 
+# remove "a" and "b" from file
+remove_tex_value(names = c("a", "b"), file_name = paste0(file, ".tex"))
+
+# delete file with base::unlink()
+unlink(paste0(file,".tex"))
+
+}
 }

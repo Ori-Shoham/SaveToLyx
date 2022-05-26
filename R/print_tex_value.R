@@ -1,12 +1,24 @@
-#' Title
+#' Print values out of a values-tex file
 #'
-#' @param names ab
+#' @param file_name File name to read from disk. file_name should have either a
+#'   .tex extension or no extension at all.
+#' @param names Character vector of names for printing.
 #' @inheritParams save_tex_value
 #'
 #' @return
 #' @export
 #'
-#' @examples a
+#' @examples \dontrun{
+#' file <- tempfile()
+#' save_tex_value(values = 1:3, names = c("a","b","c"), file_name = file)
+#'
+#' # Print "a" and "b" out of file
+#' print_tex_value(file_name = files, names = c("a", "b"))
+#'
+#' # delete file with base::unlink()
+#' unlink(paste0(file,".tex"))
+#'
+#' }
 print_tex_value <- function(file_name, path = NULL, names = NULL) {
 
   # Test and format file name

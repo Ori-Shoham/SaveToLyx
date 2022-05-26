@@ -2,7 +2,7 @@
 % Please edit documentation in R/save_tex_value.R
 \name{handle_file_name}
 \alias{handle_file_name}
-\title{Title}
+\title{Constructs fully qualified file name}
 \usage{
 handle_file_name(file_name, path = NULL)
 }
@@ -19,6 +19,8 @@ to working directory.}
 a complete file name (with path and extension)
 }
 \description{
-Title
+\code{hanle_file_name} checks the extension of \code{file_name}, breaks if it
+is not a '.tex' extension and adds '.tex' extension if no extension exists.
+If \code{path} is not \code{NULL} combines \code{path} and \code{file_name}.
 }
 \keyword{internal}

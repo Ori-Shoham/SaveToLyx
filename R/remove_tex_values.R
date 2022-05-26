@@ -1,12 +1,24 @@
-#' Title
+#' Remove certain values from a values-tex file
 #'
+#' @param file_name File name containing values to be removed. file_name should
+#'   have either a .tex extension or no extension at all.
+#' @param names Character vector of names specifying which values are to be
+#'   removed.
 #' @inheritParams save_tex_value
 #'
-#'
 #' @export
-#' @examples a
+#' @examples \dontrun{
+#' file <- tempfile()
+#' save_tex_value(values = 1:3, names = c("a","b","c"), file_name = file)
 #'
-remove_tex_value <- function(names, file_name, path = NULL) {
+#' # remove "a" and "b" from file
+#' remove_tex_value(file_name = paste0(file, ".tex"), names = c("a", "b"))
+#'
+#' # delete file with base::unlink()
+#' unlink(paste0(file,".tex"))
+#'
+#' }
+remove_tex_value <- function(file_name, path = NULL, names) {
 
   # Test and format file name
   file_name <- handle_file_name(file_name, path)
