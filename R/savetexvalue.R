@@ -1,10 +1,10 @@
 #' savetexvalue: A package for creation and management of value-tex files
 #'
-#' The savetexvalue package provides functions for creation and management of
-#' special formatted '.tex' files containing values calculated in R. The files
-#' contain latex commands with user provided names and values that allow
-#' integrating these values in a latex project in an automatic fashion instead
-#' of copy-pasting.
+#' savetexvalue helps saving and managing values calculated in R for integration in
+#' projects written in LaTeX in an automatic and reproducible fashion. savetexvalue
+#' uses special formatted '.tex' files containing pairs of values and command
+#' names to be used in LaTeX.
+
 #'
 #' @section savetexvalue functions: The savetexvalue package contains three
 #'   functions: \itemize{ \item \code{save_tex_value} for saving values to file.

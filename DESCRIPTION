@@ -5,12 +5,10 @@ Authors@R: c(
     person("Ro'ee", "Levy", , "levyroee@gmail.com", role = c("aut")),
     person("Ori", "Shoham", , "ori.shoham1@gmail.com", role = c("aut", "cre"))
   )
-Description: Create and manage a specific format of tex files for using
-    values calculated in R within your latex document. Each file conatins 
-    values and the names of the commands associated with them. Using these
-    files as inputs in your latex document allows you to use the values saved
-    in them by calling the command associated with them instead of copy-pasting
-    for your R session.
+Description: Save and manage values calculated in R for integration in
+    projects written in LaTeX in an automatic and reproducible fashion.
+    savetexvalue uses special formatted '.tex' files containing pairs of values
+    and command names to be used in LaTeX.
 License: MIT + file LICENSE
 URL: https://github.com/Ori-Shoham/savetexvalue
 BugReports: https://github.com/Ori-Shoham/savetexvalue/issues
