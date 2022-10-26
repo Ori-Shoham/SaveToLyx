@@ -83,6 +83,6 @@ paper could look like this:
 
     \end{document}
 
-And after compiling to `.pdf` would look like this:
+And after compiling to `.pdf` the paper would look like this:
 
 ![screenshot](man/figures/README-example.PNG)
