@@ -1,6 +1,6 @@
 Package: savetexvalue
 Title: Manage Values Calculated in R for Projects Written in Tex
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: c(
     person("Ro'ee", "Levy", , "levyroee@gmail.com", role = c("aut")),
     person("Ori", "Shoham", , "ori.shoham1@gmail.com", role = c("aut", "cre"))
