@@ -6,7 +6,10 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of savetexvalue is to …
+`savetexvalue` helps saving and managing values calculated in R for
+integration in projects written in LaTeX in an automatic and
+reproducible way. savetexvalue uses special formatted `.tex` files
+containing pairs of values and command names to be used in LaTeX.
 
 ## Installation
 
@@ -26,7 +29,7 @@ This is a basic example which shows you how to solve a common problem:
 library(savetexvalue)
 ## basic example code
 test_file_1 <- paste0(tempfile(),".tex")
-withr::local_file(save_to_lyx(currentValue = 1:26, currentName = letters, latexFile = test_file_1))
+withr::local_file(save_tex_value(value = 1:26, name = letters, file_name = test_file_1))
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`?

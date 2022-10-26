@@ -6,7 +6,7 @@
 \title{savetexvalue: A package for creation and management of value-tex files}
 \description{
 savetexvalue helps saving and managing values calculated in R for integration in
-projects written in LaTeX in an automatic and reproducible fashion. savetexvalue
+projects written in LaTeX in an automatic and reproducible way. savetexvalue
 uses special formatted '.tex' files containing pairs of values and command
 names to be used in LaTeX.
 }
