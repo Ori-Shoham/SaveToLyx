@@ -21,16 +21,24 @@ You can install the development version of savetexvalue from
 devtools::install_github("Ori-Shoham/savetexvalue")
 ```
 
-## Example
+## Usage and examples
 
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(savetexvalue)
+data(iris)
 ## basic example code
 test_file_1 <- paste0(tempfile(),".tex")
-withr::local_file(save_tex_value(value = 1:26, name = letters, file_name = test_file_1))
+withr::local_file(save_tex_value(value = 1:26, name = letters, file_name = "iris"))
+print_tex_value(file_name = "iris", path = NULL, names = c("a","b","f"))
+#>    name value
+#> 1:    a  1.00
+#> 2:    b  2.00
+#> 3:    f  6.00
 ```
+
+![screenshot](man/figures/README-test-1.PNG)
 
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:
