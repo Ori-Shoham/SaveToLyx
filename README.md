@@ -47,7 +47,7 @@ prop_greater_6 <- iris %>%
   summarise(prop_greater = mean(Sepal.Length > 6))
 
 # Save the values:
-path <-tempdir()
+path <- tempdir()
 save_tex_value(values = avg_sep_length$sep_length_avg,
                names = paste0(avg_sep_length$Species,"Avg"),
                file_name = "iris_calc",
