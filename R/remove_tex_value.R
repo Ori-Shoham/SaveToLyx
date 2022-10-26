@@ -1,10 +1,10 @@
 #' Remove certain values from a values-tex file
 #'
+#' @inheritParams save_tex_value
 #' @param file_name File name containing values to be removed. file_name should
 #'   have either a .tex extension or no extension at all.
 #' @param names Character vector of names specifying which values are to be
 #'   removed.
-#' @inheritParams save_tex_value
 #'
 #' @export
 #' @examples \dontrun{
@@ -18,7 +18,7 @@
 #' unlink(paste0(file,".tex"))
 #'
 #' }
-remove_tex_value <- function(file_name, path = NULL, names) {
+remove_tex_value <- function(names, file_name, path = NULL) {
 
   # Test and format file name
   file_name <- handle_file_name(file_name, path)

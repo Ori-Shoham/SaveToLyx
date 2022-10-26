@@ -5,7 +5,6 @@
 #' @param names Character vector of names for printing.
 #' @inheritParams save_tex_value
 #'
-#' @return
 #' @export
 #'
 #' @examples \dontrun{

@@ -17,9 +17,6 @@ to working directory.}
 
 \item{names}{Character vector of names for printing.}
 }
-\value{
-
-}
 \description{
 Print values out of a values-tex file
 }
