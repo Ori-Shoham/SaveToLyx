@@ -23,20 +23,52 @@ devtools::install_github("Ori-Shoham/savetexvalue")
 
 ## Usage and examples
 
-This is a basic example which shows you how to solve a common problem:
+Suppose you work on a project analyzing the sepal length of irises.
 
 ``` r
 library(savetexvalue)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 data(iris)
-## basic example code
-test_file_1 <- paste0(tempfile(),".tex")
-withr::local_file(save_tex_value(value = 1:26, name = letters, file_name = "iris"))
-print_tex_value(file_name = "iris", path = NULL, names = c("a","b","f"))
-#>    name value
-#> 1:    a  1.00
-#> 2:    b  2.00
-#> 3:    f  6.00
+
+# These are the computations
+avg_sep_length <- iris %>% 
+  group_by(Species) %>% 
+  summarise(sep_length_avg = mean(Sepal.Length))
+
+prop_greater_6 <- iris %>% 
+  group_by(Species) %>% 
+  summarise(prop_greater = mean(Sepal.Length>6))
+
+# Save the values:
+path <- tempdir()
+save_tex_value(values = avg_sep_length$sep_length_avg,
+               names = paste0(avg_sep_length$Species,"Avg"),
+               file_name = "iris_calc",
+               path = path)
+save_tex_value(values = prop_greater_6$prop_greater,
+               names = paste0(prop_greater_6$Species,"PerGreaterSix"),
+               file_name = "iris_calc",
+               path = path,
+               percent = T,
+               accuracy = 0.1)
 ```
+
+The contents of `iris_calc.tex` should now be:
+
+    \newcommand\setosaAvg {5.01}
+    \newcommand\setosaPerGreaterSix {0.0\%}
+    \newcommand\versicolorAvg {5.94}
+    \newcommand\versicolorPerGreaterSix {40.0\%}
+    \newcommand\virginicaAvg {6.59}
+    \newcommand\virginicaPerGreaterSix {82.0\%}
 
 ![screenshot](man/figures/README-test-1.PNG)
 
