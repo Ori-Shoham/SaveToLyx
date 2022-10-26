@@ -4,6 +4,8 @@
 # savetexvalue
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/Ori-Shoham/savetolyx/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Ori-Shoham/savetolyx/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 savetexvalue helps saving and managing values calculated in R for
