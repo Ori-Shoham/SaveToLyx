@@ -76,7 +76,10 @@ paper could look like this:
     \begin{document}
 
     \input{iris_calc}
-    We find that the Virginica species tends to have longer sepals than the Versicolor species. Virginicas' sepals are \virginicaAvg{} inches long on average and \virginicaPerGreaterSix{} of them are longer than 6 inches while Versicolors' sepals are only \versicolorAvg{} inches long on average and only \versicolorPerGreaterSix{} of them are longer than 6 inches.
+    We find that the Virginica species tends to have longer sepals than the Versicolor species.
+    Virginicas' sepals are \virginicaAvg{} inches long on average and \virginicaPerGreaterSix{}
+    of them are longer than 6 inches while Versicolors' sepals are only \versicolorAvg{}
+    inches long on average and only \versicolorPerGreaterSix{} of them are longer than 6 inches.
 
     \end{document}
 
