@@ -108,6 +108,7 @@ save_tex_value <- function(values, names, file_name, path = NULL, translate = TR
   if (n_exist == 1) message("One value overriden")
 }
 
+
 #' Formats values for lyx
 #'
 #' @inheritParams save_tex_value
